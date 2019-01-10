@@ -1,0 +1,29 @@
+FROM phusion/baseimage
+MAINTAINER Library Simplified <info@librarysimplified.org>
+
+# A version tag is not currently provided, but should be in future development
+# Instead default to 'master' branch
+ARG version="master"
+ARG repo="NYPL-Simplified/circulation-patron-web"
+
+# Copy over all Library Simplified build files for this image
+COPY . /ls_build
+
+# cleanup.sh is part of base image, referencing its build scripts
+# NOTE: we could create a variable for deployment target ("circulation", "webclient")
+# and generalize the nginx.sh script so it copies the correct conf file;
+# if so, rename original nginx.conf to nginx-circulation.conf
+RUN /bin/bash -c "/ls_build/simplified_webclient.sh ${repo} ${version} \
+      && /ls_build/logrotate.sh \
+      && /ls_build/nginx-webclient.sh \
+      && rm -rf /ls_build && /bd_build/cleanup.sh"
+
+VOLUME /var/log
+WORKDIR /home/simplified/webclient
+EXPOSE 80
+
+CMD ["/sbin/my_init"]
+
+# # If you launch the container interactively with `docker run -it`,
+# # this is where you'll end up:
+# ENTRYPOINT ["/bin/bash"]
