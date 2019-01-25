@@ -11,8 +11,7 @@ curl -sL https://deb.nodesource.com/setup_8.x | bash -
 
 # TODO: Any additional tools/utilities? (tzdata, etc.?)
 apt-get update && $minimal_apt_get_install git \
-  nodejs \
-  npm
+  nodejs
 
 # Create a user.
 useradd -ms /bin/bash -U simplified
