@@ -6,6 +6,13 @@ MAINTAINER Library Simplified <info@librarysimplified.org>
 ARG version="master"
 ARG repo="NYPL-Simplified/circulation-patron-web"
 
+ENV TZ=US/Eastern
+ENV REGISTRY_BASE=""
+ENV SIMPLIFIED_CATALOG_BASE=""
+ENV CONFIG_FILE=""
+ENV SHORTEN_URLS=false
+ENV CACHE_EXPIRATION_SECONDS="3600"
+
 # Copy over all Library Simplified build files for this image
 COPY . /ls_build
 

@@ -6,18 +6,11 @@ set -x
 repo="$1"
 version="$2"
 
-# TODO: Review; do we need the Python utilities since webclient is just node.js
-# Any additional tools/utilities? (tzdata, etc.?)
-apt-get update && $minimal_apt_get_install python-dev \
-  python2.7 \
-  python-nose \
-  python-setuptools \
-  gcc \
-  git \
-  libpcre3 \
-  libpcre3-dev \
-  libffi-dev \
-  libjpeg-dev \
+# Add a PPA repo for obtaining version 8.x of Node.json
+curl -sL https://deb.nodesource.com/setup_8.x | bash -
+
+# TODO: Any additional tools/utilities? (tzdata, etc.?)
+apt-get update && $minimal_apt_get_install git \
   nodejs \
   npm
 
@@ -50,6 +43,12 @@ npm install
 # Link the repository code to /home/simplified and change permissions
 su - simplified -c "ln -s /var/www/webclient /home/simplified/webclient"
 chown -RHh simplified:simplified /home/simplified/webclient
+
+# Copy webclient libraries list/config sample file, if the config file option is chosen
+if [ -n "$CONFIG_FILE" ]; then
+  cp /ls_build/services/webclient_libraries.conf $CONFIG_FILE
+  chown -RHh simplified:simplified $CONFIG_FILE
+fi
 
 # Give logs a place to go.
 mkdir /var/log/simplified
