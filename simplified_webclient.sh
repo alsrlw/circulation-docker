@@ -6,11 +6,11 @@ set -x
 repo="$1"
 version="$2"
 
-# Add a PPA repo for obtaining version 10.x of Node.json
-curl -sL https://deb.nodesource.com/setup_10.x | bash -
+# Add a PPA repo for obtaining version 8.x of Node.json
+curl -sL https://deb.nodesource.com/setup_8.x | bash -
 
 # TODO: Any additional tools/utilities? (tzdata, etc.?)
-apt-get update && $minimal_apt_get_install git \
+apt-get update && apt-get -y install git \
   nodejs
 
 # Create a user.
