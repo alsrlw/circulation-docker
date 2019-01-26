@@ -10,7 +10,7 @@ version="$2"
 curl -sL https://deb.nodesource.com/setup_8.x | bash -
 
 # TODO: Any additional tools/utilities? (tzdata, etc.?)
-apt-get update && apt-get -y install git \
+apt-get update && $minimal_apt_get_install git \
   nodejs
 
 # Create a user.
@@ -30,8 +30,10 @@ git checkout $version
 # ?Good idea for future?
 #printf "$(git describe --tags)" > .version
 
-# Install packages from main packages.json file
-npm install
+# Install dependencies/packages from main packages.json file
+# If a development environment is determined, a dependency on fsevents causes
+# errors if not on OS X
+npm install --production
 
 # TODO: Add Node process manager here? pm2, or forever/supervisor mentioned by Amy, or 
 # runit are options (runit: http://blog.mobnia.com/using-runit-to-supervise-nodejs-applications/).
