@@ -20,7 +20,7 @@ useradd -ms /bin/bash -U simplified
 su simplified
 
 # Get the proper version of the codebase.
-git clone https://github.com/${repo}.git webclient
+git clone https://github.com/${repo}.git ./webclient
 cd webclient
 # TODO: A version tag is not currently supported, but should be in future development
 # Instead, temporarily, default to master (see Dockerfile)
@@ -39,11 +39,11 @@ npm install --production
 # Return to root user
 exit
 
-mkdir /var/www && cd /var/www
+mkdir /var/www
 # Link the repository code to /home/simplified and change permissions to simplified user
-ln -s /var/www/webclient /home/simplified/webclient
+ln -s /home/simplified/webclient /var/www/webclient
 # Set correct ownership of symlink (-h without affecting ownership of target)
-chown -RHh simplified:simplified /var/www/webclient
+chown -h simplified:simplified /var/www/webclient
 
 # Copy webclient libraries config list sample file, if the config file option is chosen
 if [ -n "$CONFIG_FILE" ]; then

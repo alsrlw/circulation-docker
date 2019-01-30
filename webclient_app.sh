@@ -20,7 +20,7 @@ chmod +x /etc/sv/webclient_app/run
 chmod +x /etc/sv/webclient_app/log/run
 
 # Create symlink into service directory
-ln -s /etc/service/webclient_app /etc/sv/webclient_app
+ln -s /etc/sv/webclient_app /etc/service/webclient_app
 
 # Do any additional scripts need to run at startup?
 # If so, add to startup directory and reference specifically below (do not copy all)
