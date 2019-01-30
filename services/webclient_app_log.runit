@@ -1,0 +1,2 @@
+#!/bin/bash
+exec chpst -u simplified svlogd -tt /var/log/webclient_app

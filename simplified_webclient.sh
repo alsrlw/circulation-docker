@@ -16,10 +16,11 @@ apt-get update && $minimal_apt_get_install git \
 # Create a user.
 useradd -ms /bin/bash -U simplified
 
+# Change to simplified user
+su simplified
+
 # Get the proper version of the codebase.
-mkdir /var/www && cd /var/www
 git clone https://github.com/${repo}.git webclient
-chown simplified:simplified webclient
 cd webclient
 # TODO: A version tag is not currently supported, but should be in future development
 # Instead, temporarily, default to master (see Dockerfile)
@@ -35,25 +36,18 @@ git checkout $version
 # errors if not on OS X
 npm install --production
 
-# TODO: Add Node process manager here? pm2, or forever/supervisor mentioned by Amy, or 
-# runit are options (runit: http://blog.mobnia.com/using-runit-to-supervise-nodejs-applications/).
-# Runit is already the process manager of choice for the nginx.sh script
+# Return to root user
+exit
 
+mkdir /var/www && cd /var/www
+# Link the repository code to /home/simplified and change permissions to simplified user
+ln -s /var/www/webclient /home/simplified/webclient
+# Set correct ownership of symlink (-h without affecting ownership of target)
+chown -RHh simplified:simplified /var/www/webclient
 
-# TODO: Review items below to determine which needs to be kept, altered, or removed
-# Link the repository code to /home/simplified and change permissions
-su - simplified -c "ln -s /var/www/webclient /home/simplified/webclient"
-chown -RHh simplified:simplified /home/simplified/webclient
-
-# Copy webclient libraries list/config sample file, if the config file option is chosen
+# Copy webclient libraries config list sample file, if the config file option is chosen
 if [ -n "$CONFIG_FILE" ]; then
   cp /ls_build/services/webclient_libraries.conf $CONFIG_FILE
   chown -RHh simplified:simplified $CONFIG_FILE
 fi
 
-# Give logs a place to go.
-mkdir /var/log/simplified
-
-# Do any additional scripts need to run at startup?
-# If so, add to startup directory and reference specifically below (do not copy all)
-#cp /ls_build/startup/0X_added_script.sh /etc/my_init.d/

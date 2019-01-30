@@ -21,6 +21,7 @@ COPY . /ls_build
 # and generalize the nginx.sh script so it copies the correct conf file;
 # if so, rename original nginx.conf to nginx-circulation.conf
 RUN /bin/bash -c "/ls_build/simplified_webclient.sh ${repo} ${version} \
+      && /ls_build/webclient_app.sh \
       && /ls_build/logrotate.sh \
       && /ls_build/nginx-webclient.sh \
       && rm -rf /ls_build && /bd_build/cleanup.sh"

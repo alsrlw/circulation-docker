@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e
+
+cd /var/www/webclient
+
+exec 2>&1
+exec chpst -u simplified npm run prod
+# Option if calling node is required:
+#exec chpst -u simplified /usr/local/bin/node /var/www/webclient/src/server/index.tsx
